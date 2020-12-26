@@ -13,8 +13,11 @@ import UserNotifications    // 追加
 class InputViewController: UIViewController {
     
     @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var categoryField: UITextField!
     @IBOutlet weak var contentsTextField: UITextView!
     @IBOutlet weak var datePicker: UIDatePicker!
+   
+   
     let realm = try! Realm()    // 追加する
     var task: Task!   // 追加する
     

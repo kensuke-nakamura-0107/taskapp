@@ -45,20 +45,22 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <searchBar contentMode="redraw" placeholder="カテゴリ検索" translatesAutoresizingMaskIntoConstraints="NO" id="FNP-86-XB4">
+                            <searchBar contentMode="redraw" placeholder="予定のカテゴリ検索できます" translatesAutoresizingMaskIntoConstraints="NO" id="NJB-Kv-kTW">
                                 <rect key="frame" x="0.0" y="88" width="414" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="oMQ-Me-vqY" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="1Dt-n3-7q0"/>
-                            <constraint firstAttribute="bottom" secondItem="oMQ-Me-vqY" secondAttribute="bottom" id="Msa-WP-o1N"/>
-                            <constraint firstItem="FNP-86-XB4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Nvd-0O-QWH"/>
-                            <constraint firstItem="FNP-86-XB4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dtL-zx-Yvt"/>
-                            <constraint firstItem="oMQ-Me-vqY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="eTy-RB-pAG"/>
-                            <constraint firstItem="FNP-86-XB4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="eU6-gX-mvP"/>
-                            <constraint firstItem="oMQ-Me-vqY" firstAttribute="top" secondItem="FNP-86-XB4" secondAttribute="bottom" id="mIK-qB-dsr"/>
+                            <constraint firstItem="NJB-Kv-kTW" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="1uZ-Aq-6iP"/>
+                            <constraint firstItem="NJB-Kv-kTW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="75V-pF-CEV"/>
+                            <constraint firstItem="oMQ-Me-vqY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="EVB-kp-k7U"/>
+                            <constraint firstItem="NJB-Kv-kTW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Haf-sB-1c2"/>
+                            <constraint firstItem="oMQ-Me-vqY" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="SzU-at-m3k"/>
+                            <constraint firstItem="oMQ-Me-vqY" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="WuB-kM-bb3"/>
+                            <constraint firstItem="oMQ-Me-vqY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="eCC-TY-bg6"/>
+                            <constraint firstAttribute="bottom" secondItem="oMQ-Me-vqY" secondAttribute="bottom" id="gUc-b9-7ba"/>
+                            <constraint firstItem="oMQ-Me-vqY" firstAttribute="top" secondItem="NJB-Kv-kTW" secondAttribute="bottom" id="hcl-A8-ErF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -70,6 +72,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="searchCategory" destination="NJB-Kv-kTW" id="kub-Oe-nbr"/>
                         <outlet property="tableView" destination="oMQ-Me-vqY" id="csa-MY-atW"/>
                         <segue destination="zSz-xU-23F" kind="show" identifier="cellSegue" id="jIx-XC-9aR"/>
                     </connections>

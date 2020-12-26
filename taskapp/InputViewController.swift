@@ -29,6 +29,7 @@ class InputViewController: UIViewController {
         self.view.addGestureRecognizer(tapGesture)
 
         titleTextField.text = task.title
+        categoryField.text = task.category
         contentsTextField.text = task.contents
         datePicker.date = task.date
     }
@@ -41,6 +42,7 @@ class InputViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         try! realm.write {
             self.task.title = self.titleTextField.text!
+            self.task.category = self.categoryField.text!
             self.task.contents = self.contentsTextField.text
             self.task.date = self.datePicker.date
             self.realm.add(self.task, update: .modified)
@@ -90,15 +92,5 @@ class InputViewController: UIViewController {
             }
         }
     } // --- ここまで追加 ---
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

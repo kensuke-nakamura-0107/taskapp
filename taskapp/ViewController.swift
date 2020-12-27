@@ -4,12 +4,6 @@
 //
 //  Created by 中村憲佑 on 2020/12/25.
 //  Copyright © 2020 kensuke.nakamura. All rights reserved.
-//
-
-
-//①検索ボタンが押されたらSearchBar!に入れた値を取得する
-//②SearchBar!に入れた値をRealmのfilterにセットして該当のものだけ表示する
-
 
 import UIKit
 import RealmSwift
@@ -23,31 +17,38 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let realm = try! Realm()  // ←追加
     //検索対応変数
     var search_fg = 0
-    var search_text = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         searchCategory.delegate = self
+        let text : String? = searchCategory.text
     }
     
-    var s = UISearchBar()
+    //var text = searchCategory.text
+    
     //検索ボタン押下アクション（①⭐️検索ボタンが押されたらSearchBar!に入れた値を取得する）
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        search_text = searchCategory
-        if search_text.isEmpty {
+    func searchBarSearchButtonClicked(_ searchCategory: UISearchBar) {
+        let search_text = searchCategory.text
+           if search_text == ""{
             search_fg = 0
+            tableView.reloadData()
+            print("キーワードなし")
         } else {
             search_fg = 1
+            tableView.reloadData()
+            print("キーワードあり")
         }
+        return
     }
+    
     //全体結果表示用
-       var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true)
-    //絞り込み結果表示用
-       var searchReslut = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true).filter("category = search_text")
-
-    // データの数を返すメソッド（（②⭐️検索ボタンが押されていたかどうかで場合わけ）
+    var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true)
+    //絞り込み結果表示用（⭐️変数を入れたい）
+    var searchReslut = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true).filter("category = %@","ランチ")
+    
+   // データの数を返すメソッド
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if search_fg == 0 {
             return taskArray.count
@@ -62,18 +63,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Cellに値を設定する.  --- ここから ---
         if search_fg == 0 {
             let task = taskArray[indexPath.row]
+            cell.textLabel?.text = task.title
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+            let dateString:String = formatter.string(from: task.date)
+            cell.detailTextLabel?.text = dateString
+        // --- ここまで追加 --
         } else {
             let task = searchReslut[indexPath.row]
-            }
-        
-        cell.textLabel?.text = task.title
-
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-
-        let dateString:String = formatter.string(from: task.date)
-        cell.detailTextLabel?.text = dateString
-        // --- ここまで追加 --
+            cell.textLabel?.text = task.title
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+            let dateString:String = formatter.string(from: task.date)
+            cell.detailTextLabel?.text = dateString
+        }
         return cell
     }
     // 各セルを選択した時に実行されるメソッド
@@ -112,8 +115,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         let inputViewController:InputViewController = segue.destination as! InputViewController
         if segue.identifier == "cellSegue" {
+            if search_fg == 0 {
             let indexPath = self.tableView.indexPathForSelectedRow
             inputViewController.task = taskArray[indexPath!.row]
+            } else {
+            let indexPath = self.tableView.indexPathForSelectedRow
+            inputViewController.task = searchReslut[indexPath!.row]
+            }
         } else {
             let task = Task()
 

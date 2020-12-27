@@ -21,37 +21,51 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var searchCategory: UISearchBar!
     //イニシャライズ
     let realm = try! Realm()  // ←追加
+    //検索対応変数
+    var search_fg = 0
+    var search_text = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-    }
-    //検索ボタン押下アクション（①⭐️検索ボタンが押されたらSearchBar!に入れた値を取得する）
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
+        searchCategory.delegate = self
     }
     
+    var s = UISearchBar()
+    //検索ボタン押下アクション（①⭐️検索ボタンが押されたらSearchBar!に入れた値を取得する）
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        search_text = searchCategory
+        if search_text.isEmpty {
+            search_fg = 0
+        } else {
+            search_fg = 1
+        }
+    }
     //全体結果表示用
        var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true)
     //絞り込み結果表示用
-       var searchReslut = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true).filter("category = 'ランチ'")
+       var searchReslut = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: true).filter("category = search_text")
 
     // データの数を返すメソッド（（②⭐️検索ボタンが押されていたかどうかで場合わけ）
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        taskArray.count
-        //searchCategoryがブランクの場合は全部返す、値が入ってる時はsearchResult.countを返す
-//        if searchCategory.text == "" {
-//            taskArray.count
-//        } else {
-//            searchResult.count
+        if search_fg == 0 {
+            return taskArray.count
+        } else {
+            return searchReslut.count
         }
+    }
     // 各セルの内容を返すメソッド
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 再利用可能な cell を得る
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         // Cellに値を設定する.  --- ここから ---
-        let task = searchReslut[indexPath.row]
+        if search_fg == 0 {
+            let task = taskArray[indexPath.row]
+        } else {
+            let task = searchReslut[indexPath.row]
+            }
+        
         cell.textLabel?.text = task.title
 
         let formatter = DateFormatter()
@@ -116,4 +130,3 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.reloadData()
     }
 }
-
